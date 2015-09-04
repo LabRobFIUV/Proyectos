@@ -47,8 +47,8 @@ def callback(data):
     if c[0]==4:
         # Mover Brazo
         print "Mover Brazo"
-        ArmL = [c[1], c[2], c[3], c[4], c[5]]
-        Brazos(motionProxy,ArmL)
+        ArmL = [c[2], c[3], c[4], c[5], c[6]]
+        Brazos(motionProxy,ArmL,c[1])
 
     if c[0]=='5':
         print "Hablar"
@@ -59,29 +59,46 @@ def callback(data):
         print "Detenerse"
         Detenerse(motionProxy)
 
+    if c[0]==7:
+        print "Escucho"
+        asr.setLanguage("English")
+        vocabulary = ["yes", "no", "please"]
+        asr.setVocabulary(vocabulary, True)
+        asr.subscribe("Test_ASR")
+        print 'Speech recognition engine started'
+        time.sleep(20)
+        asr.unsubscribe("Test_ASR")
+
 def listener():
     print "Entro al listener"
     rospy.init_node('listener', anonymous=True)
     rospy.Subscriber("prueba", String, callback)
     rospy.spin()
 
-def Brazos(motionProxy,ArmL):
-    JointNamesL = ["LShoulderPitch", "LShoulderRoll", "LElbowYaw", "LElbowRoll","LWristYaw"]
+def Brazos(motionProxy,ArmL,Part):
+    HeadJoins = ["HeadPitch", "HeadYaw"]
+    LeftArmjoints = ["LShoulderPitch", "LShoulderRoll", "LElbowYaw", "LElbowRoll","LWristYaw"]
+    RightArmjoints = ["RShoulderPitch", "RShoulderRoll", "RElbowYaw", "RElbowRoll","RWristYaw"]
+    Pelvisjoints = ["RHipYawPitch", "LHipYawPitch"]
+    LeftLegjoints = ["LHipPitch", "LHipRoll", "LKneePitch", "LAncklePitch","LAnckleRoll"]
+    RightLegjoints = ["RHipPitch", "RHipRoll", "RKneePitch", "RAncklePitch","RAnckleRoll"]
+
     ArmL = [ x * motion.TO_RAD for x in ArmL]
     pFractionMaxSpeed = 0.2
-    motionProxy.angleInterpolationWithSpeed(JointNamesL, ArmL, pFractionMaxSpeed)
 
-def isData():
-    return select.select([sys.stdin],[],[],0)==([sys.stdin],[],[])
+    if Part==1:
+        motionProxy.angleInterpolationWithSpeed(HeadJoins, ArmL, pFractionMaxSpeed)
+    if Part==2:
+        motionProxy.angleInterpolationWithSpeed(LeftArmjoints, ArmL, pFractionMaxSpeed)
+    if Part==3:
+        motionProxy.angleInterpolationWithSpeed(RightArmjoints, ArmL, pFractionMaxSpeed)
+    if Part==4:
+        motionProxy.angleInterpolationWithSpeed(Pelvisjoints, ArmL, pFractionMaxSpeed)
+    if Part==5:
+        motionProxy.angleInterpolationWithSpeed(LeftLegjoints, ArmL, pFractionMaxSpeed)
+    if Part==6:
+        motionProxy.angleInterpolationWithSpeed(LeftLegjoints, ArmL, pFractionMaxSpeed)
 
-def Posture(postureProxy,pose,velocity):
-    postureProxy.goToPosture(pose, velocity)
-
-def Stiffness(proxy,x):
-    pNames = "Body"
-    pStiffnessLists = x
-    pTimeLists = 1.0
-    proxy.stiffnessInterpolation(pNames, pStiffnessLists, pTimeLists)
 
 def Caminar(motionProxy,X,Y,Theta,Frequency):
     motionProxy.setWalkTargetVelocity(X, Y, Theta, Frequency)
@@ -93,10 +110,20 @@ def Detenerse(motionProxy):
     Frequency=0.0
     motionProxy.setWalkTargetVelocity(X, Y, Theta, Frequency)
 
+def Posture(postureProxy,pose,velocity):
+    postureProxy.goToPosture(pose, velocity)
+
+def Stiffness(proxy,x):
+    pNames = "Body"
+    pStiffnessLists = x
+    pTimeLists = 1.0
+    proxy.stiffnessInterpolation(pNames, pStiffnessLists, pTimeLists)
+
 def main(robotIP):
     global motionProxy
     global postureProxy
     global tts
+    global asr
     try:
         motionProxy = ALProxy("ALMotion", robotIP, 9559)
     except Exception, e:
@@ -113,6 +140,13 @@ def main(robotIP):
         tts = ALProxy("ALTextToSpeech", robotIP, 9559)
     except Exception,e:
         print "Could not create proxy to ALTextToSpeech"
+        print "Error was: ",e
+        sys.exit(1)
+
+    try:
+        asr = ALProxy("ALSpeechRecognition", robotIP, 9559)
+    except Exception,e:
+        print "Could not create proxy to ALSpeechRecognition"
         print "Error was: ",e
         sys.exit(1)
 

@@ -9,7 +9,7 @@ def main():
 	drone = libardrone.ARDrone(True)
 	drone.reset()
 	drone.set_camera_view(1)
-	print "Presiona W para subir"
+	print "Presiona U para subir"
 	drone.speed = 0.1
 	i = 1
 
@@ -30,11 +30,10 @@ def main():
 			#Tecla P / Take photo
 			if (tecla == 1048603) and (running == True):
 				print "P"
-				cv.SaveImage("photo-" + str(i) + ".jpeg",frame)
+				cv2.imwrite("photo-" + str(i) + ".jpeg",frame)
 				i+=1
 				print i
-				running == False
-				break 
+				running = False
 			#Tecla U / Subir
 			elif (tecla == 1048693):
 				print "Subiendo"
@@ -75,14 +74,18 @@ def main():
 			elif (tecla == 1113937):
 				print "Izquierda"
 				#drone.turn_left()
-			#Tecla Space
+			#Tecla Space / Land
 			elif (tecla == 1048608):
 				print "Espacio"
 				#drone.land()
-			#Tecla Enter
+			#Tecla Enter / Takeoff
 			elif (tecla == 1048586):
 				print "Enter"
 				#drone.takeoff()
+			#Tecla Backspace / Emergency
+			elif (tecla == ):
+				print "Borrar"
+				#drone.reset()
 			#Escape
 			elif (tecla == 1048603):
 				cv2.destroyAllWindows()

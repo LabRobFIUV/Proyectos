@@ -5,25 +5,33 @@ import time as t
 
 def main():
 	segundos = 5
-	start = t.time()
 	drone = libardrone.ARDrone(True)
 	drone.reset()
 	drone.set_camera_view(1)
 	print "Presiona W para subir"
-	running = True
+	
 
-	while(1):
+	while True:
+		running = True
+		
 		try:
+			start = t.time()
 			frame = drone.get_image()
 			frame = cv2.cvtColor(frame, cv2.COLOR_RGB2BGR)
 			cv2.imshow('frame',frame)
 
 			tecla = cv2.waitKey(15)
+			
+			if (tecla > 0):
+				print tecla
 
 			#Tecla W
 			if (tecla == 1048695):
-				while t.time() < start + segundos:
+				drone.speed = 0.1
+				while (t.time() < start + segundos) and (running == True):
 					print "subiendo"
+				running = False
+				print "acabo"
 			#Escape
 			if (tecla == 1048603):
 				cv2.destroyAllWindows()

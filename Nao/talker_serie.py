@@ -35,6 +35,9 @@ if __name__ == '__main__':
             val='5'+raw_input("Frase: ")
             print val
 
+        if val[0]==7:
+            val[1]=int(raw_input("Numero de pose: "))
+
         val=str(val)
 
         try:

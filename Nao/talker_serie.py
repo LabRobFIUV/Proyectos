@@ -1,4 +1,5 @@
 #!/usr/bin/env python
+# Viveros Aguilar Jesus Martin
 import rospy
 import std_msgs.msg as std
 
@@ -11,15 +12,24 @@ def talker(val):
 
 if __name__ == '__main__':
     while(1):
-        val=[0,0,0,0,0,0]
-        val[0]=int(raw_input("Instruccion 1: "))
+        val=[0,0,0,0,0,0,0]
+        val[0]=int(raw_input("Instruccion: "))
 
-        if val[0]==3 or val[0]==4:
-            val[1]=int(raw_input("Instruccion 2: "))
-            val[2]=int(raw_input("Instruccion 3: "))
-            val[3]=int(raw_input("Instruccion 4: "))
-            val[4]=int(raw_input("Instruccion 5: "))
-            val[5]=int(raw_input("Instruccion 6: "))
+        if val[0]==3:
+            print "escala 1 es 10"
+            val[1]=int(raw_input("X: "))
+            val[2]=int(raw_input("Y: "))
+            val[3]=int(raw_input("Theta: "))
+            val[4]=int(raw_input("Frequency: "))
+            val[5]=int(raw_input("Time sleep: "))
+
+        if val[0]==4:
+            val[1]=int(raw_input("Parte del cuerpo: "))
+            val[2]=int(raw_input("Angulo 1: "))
+            val[3]=int(raw_input("Angulo 2: "))
+            val[4]=int(raw_input("Angulo 3: "))
+            val[5]=int(raw_input("Angulo 4: "))
+            val[6]=int(raw_input("Angulo 5: "))
 
         if val[0]==5:
             val='5'+raw_input("Frase: ")

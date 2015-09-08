@@ -25,12 +25,13 @@ class Cam():
 
 		bytes = ''
 		prom = 0
-		points= []
+		points = []
+		cresta = []
 		fps = 20
 		capSize =(320,240)
 		codec = cv2.cv.CV_FOURCC('M','J','P','G')
 
-		lower_blue = np.array([25,128,202])
+		lower_blue = np.array([123,118,93])
 		upper_blue = np.array([180,255,255])
 
 		video = cv2.VideoWriter('video.avi',codec,fps,capSize,True)
@@ -73,7 +74,7 @@ class Cam():
 
 					cv2.line(frame,(0,120),(340,120),(0,255,0),1)
 
-					#guarda las coordenadas si no estan repetidas si el objeto no se mueve se guarda la misma pocision varias veces
+					#guarda las coordenadas si no estan repetidas, si el objeto no se mueve se guarda la misma pocision varias veces
 					#
 					if not (coord in points):
 						if (cx != 0):
@@ -81,6 +82,7 @@ class Cam():
 
 					w = len(points)
 
+					#Dibuja la onda senoidal
 					for i in range(0,w-1):
 						cv2.line(frame, (points[i]),(points[i+1]),(255,0,0),1)
 						prom = points[i][1] + prom
@@ -88,10 +90,22 @@ class Cam():
 					prom = prom / w
 					int (prom)
 
+					#Dibuja la linea promedio
 					for i in range (0,w-1):
 						cv2.line(frame, (points[i][0],prom), (points[i+1][0],prom),(255,255,0),1)
+						if (i > 2) and (i < w-2):
+							if (points[i-1][1] < points[i][1]) and (points[i+1][1] < points[i][1]):
+								cresta.append(points[i])
 
+					#Dibuja la ruta que siguio de la posicion inicial a la final
 					cv2.line(frame,(points[0]),(points[w-1]),(255,255,255),1)
+
+					#for i in range (1,w-2):
+						
+					o = len(cresta)
+					#for i in range (0,o-1):
+					if (o > 2):
+						cv2.line(frame,cresta[0],cresta[o-1],(255,148,148),1)
 
 					try:
 						video.write(frame)
@@ -102,20 +116,21 @@ class Cam():
 					cv2.imshow('Objeto',thresh2)
 
 					if cv2.waitKey(1) == 1048603:
+						print cresta
 						f = open('posiciones.txt','wa')
 						print "Streaming terminado"
 						for i in range(0,len(points)-1):
 							f.write(str(points[i][0]) + " " + str(points[i][1]) + "\n")
 
 						dif = points[0][0] - prom
-						print dif
-						print points
+						#print dif
+						#print points
 						if (dif < 0):
 							dif = (dif * -1)
 
 						res = dif *(1.90909090909090909090)
 						int (res)
-						print res
+						#print res
 						f = open('distancia.txt','wa')
 						f.write( "Diferencia en pixeles: " + str(dif) + "\n"
 								+ "Diferencia en cm: " + str(res))

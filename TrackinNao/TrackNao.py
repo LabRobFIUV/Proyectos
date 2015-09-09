@@ -93,19 +93,19 @@ class Cam():
 					#Dibuja la linea promedio
 					for i in range (0,w-1):
 						cv2.line(frame, (points[i][0],prom), (points[i+1][0],prom),(255,255,0),1)
-						if (i > 2) and (i < w-2):
-							if (points[i-1][1] < points[i][1]) and (points[i+1][1] < points[i][1]):
-								cresta.append(points[i])
 
 					#Dibuja la ruta que siguio de la posicion inicial a la final
 					cv2.line(frame,(points[0]),(points[w-1]),(255,255,255),1)
 
-					#for i in range (1,w-2):
-						
+					for i in range (1,w-1):
+						if not (points[i] in cresta):
+							if (points[i-1][1] < points[i][1]) and (points[i+1][1] < points[i][1]):
+								cresta.append(points[i])
+	
 					o = len(cresta)
-					#for i in range (0,o-1):
 					if (o > 2):
-						cv2.line(frame,cresta[0],cresta[o-1],(255,148,148),1)
+						for i in range(0,o-1):
+							cv2.line(frame,cresta[i],cresta[i+1],(255,148,148),1)
 
 					try:
 						video.write(frame)

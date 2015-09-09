@@ -31,19 +31,19 @@ def callback(data):
         # Caminar
         print "Caminar"
         #(motionProxy,X,Y,Theta,Frequency)
-        Caminar(motionProxy,c[1]/10.0,c[2]/10.0,c[3]/10.0,c[4]/10.0)
+        #Caminar(motionProxy,c[1]/10.0,c[2]/10.0,c[3]/10.0,c[4]/10.0)
 
-        '''
+
         # 1.82 ~ 2mtrs
         x  = 1.82
         y  = 0
         theta  = 0
         motionProxy.moveTo(x, y, theta)
-        '''
 
-        if c[5]!=0:
-            time.sleep(15)
-            Detenerse(motionProxy)
+
+        #if c[5]!=0:
+        #    time.sleep(15)
+        #    Detenerse(motionProxy)
 
     if c[0]==4:
         # Mover Brazo
@@ -60,6 +60,10 @@ def callback(data):
         print "Detenerse"
         Detenerse(motionProxy)
 
+<<<<<<< HEAD
+    if c[0]==7:
+        print "Escucho ahora"
+=======
     if c[0]=="No se puede":
         print "Cambiar Pose"
         if c[1]==1:
@@ -77,11 +81,11 @@ def callback(data):
 
     if c[0]==8:
         print "Escucho"
+>>>>>>> 180d9fd4e9202eb2e646cf87552a7c6e2b3a8eab
         asr.setLanguage("English")
-        vocabulary = ["yes", "no", "please"]
+        vocabulary = ["hello", "my","name","is","kratos"]
         asr.setVocabulary(vocabulary, True)
         asr.subscribe("Test_ASR")
-        print 'Speech recognition engine started'
         time.sleep(20)
         asr.unsubscribe("Test_ASR")
 
@@ -176,7 +180,11 @@ def main(robotIP):
     Stiffness(motionProxy,0)
 
 if __name__ == "__main__":
+<<<<<<< HEAD
+    robotIp = "148.226.225.190"
+=======
     robotIp = "148.226.225.50"
+>>>>>>> 180d9fd4e9202eb2e646cf87552a7c6e2b3a8eab
     if len(sys.argv) <= 1:
         print "..."
     else:

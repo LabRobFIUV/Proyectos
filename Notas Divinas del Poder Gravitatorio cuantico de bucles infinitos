@@ -1,0 +1,169 @@
+-Iconos moka
+sudo add-apt-repository ppa:moka/stable
+sudo apt-get update
+sudo apt-get install moka-icon-theme
+
+-tema gtk
+Numix
+sudo add-apt-repository ppa:numix/ppa
+sudo apt-get update && sudo apt-get install numix-gtk-theme
+
+Material Design
+sudo add-apt-repository ppa:snwh/pulp
+sudo apt-get update
+sudo apt-get install paper-gtk-theme paper-icon-theme
+
+-synapse
+sudo add-apt-repository ppa:synapse-core/testing
+sudo apt-get update
+sudo apt-get install synapse
+
+-plank
+sudo add-apt-repository ppa:ricotz/docky
+sudo apt-get update && sudo apt-get install plank
+sudo apt-get install plank-theme-moka
+
+
+-youtube
+sudo add-apt-repository ppa:clipgrab-team/ppa
+sudo apt-get update && sudo apt-get install clipgrab
+
+-popcorn time (Deprecated)
+sudo add-apt-repository ppa:webupd8team/popcorntime
+sudo apt-get update
+sudo apt-get install popcorn-time
+
+-libreoffice
+sudo add-apt-repository ppa:libreoffice/ppa
+sudo apt-get update
+sudo apt-get install libreoffice
+
+-rar
+sudo apt-get install rar
+
+-unrar
+sudo apt-get install unrar
+
+-vlc
+sudo add-apt-repository ppa:videolan/stable-daily
+sudo apt-get update && sudo apt-get install vlc
+
+-sublime
+sudo add-apt-repository ppa:webupd8team/sublime-text-3 
+sudo apt-get update 
+sudo apt-get install sublime-text
+
+para el tema
+
+"theme": "Seti.sublime-theme",
+"color_scheme": "Packages/Seti_UI/Scheme/Seti.tmTheme",
+
+-opencv
+sudo apt-get install build-essential
+sudo apt-get install cmake git libgtk2.0-dev pkg-config libavcodec-dev libavformat-dev libswscale-dev
+sudo apt-get install python-dev python-numpy libtbb2 libtbb-dev libjpeg-dev libpng-dev libtiff-dev libjasper-dev libdc1394-22-dev
+
+mkdir build
+cd build
+cmake ../
+make
+sudo make install
+
+-ffplay
+sudo add-apt-repository ppa:jon-severinsson/ffmpeg
+sudo apt-get update
+sudo apt-get install ffmpeg
+sudo apt-get install frei0r-plugins
+
+-java
+sudo add-apt-repository ppa:webupd8team/java
+sudo apt-get update
+sudo apt-get install oracle-java8-installer
+
+-latex
+sudo apt-get install texlive-latex-extra
+sudo apt-get install texlive-fonts-recommended
+sudo apt-get install texlive-fonts-extra
+sudo apt-get install texlive-science
+
+-viewer
+sudo add-apt-repository ppa:samrog131/ppa
+sudo apt-get update
+sudo apt-get install photoqt
+
+-folders
+sudo add-apt-repository ppa:costales/folder-color
+sudo apt-get update
+sudo apt-get install folder-color
+
+-espacios
+sudo apt-get install baobab
+
+-hardaware
+sudo apt-get install hardinfo
+
+-packettracer
+sudo dpkg --add-architecture i386
+sudo apt-get update
+sudo apt-get install libc6:i386
+sudo apt-get install lib32z1 lib32ncurses5 lib32bz2-1.0
+sudo apt-get install libnss3-1d:i386 libqt4-qt3support:i386 libssl1.0.0:i386 libqtwebkit4:i386 libqt4-scripttools:i386
+
+sudo ./install
+sudo ./set_ptenv.sh
+sudo su
+cd /usr/share/applications
+sudo gedit packettracer.desktop
+
+ [Desktop Entry]
+ Name= Packettracer
+ Comment=Networking
+ GenericName=Cisco Packettracer
+ Exec=/opt/packettracer/packettracer
+ Icon=/usr/share/icons/packettracer.jpeg
+ StartupNotify=true
+ Terminal=false
+ Type=Application
+
+-ssh
+
+sudo apt-get install openssh-server
+
+-latexstudio
+sudo apt-add-repository ppa:blahota/texstudio
+sudo apt-get update
+sudo apt-get install texstudio
+
+-spotify
+sudo apt-key adv --keyserver hkp://keyserver.ubuntu.com:80 --recv-keys D2C19886
+echo deb http://repository.spotify.com stable non-free | sudo tee /etc/apt/sources.list.d/spotify.list
+sudo apt-get update  
+sudo apt-get install spotify-client 
+
+-Calendar
+sudo add-apt-repository ppa:apandada1/typhoon
+sudo apt-get update
+sudo apt-get install typhoon
+
+-Synaptic
+sudo apt-get update
+sudo apt-get upgrade
+sudo apt-get install synaptic
+
+-Jdownloader
+sudo add-apt-repository ppa:jd-team/jdownloader
+sudo apt-get update
+sudo apt-get install jdownloader-installer
+
+ps -u alpha : Muestra procesos
+sudo kill -9 NUMProceso
+
+Subir actualizaciones
+
+git status
+git add --all
+git commit -m "Comentario"
+git push origin master
+
+bajar actualizaciones
+git pull request master

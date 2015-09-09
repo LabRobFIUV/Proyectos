@@ -60,8 +60,28 @@ def callback(data):
         print "Detenerse"
         Detenerse(motionProxy)
 
+<<<<<<< HEAD
     if c[0]==7:
         print "Escucho ahora"
+=======
+    if c[0]=="No se puede":
+        print "Cambiar Pose"
+        if c[1]==1:
+            Posture(postureProxy,"Stand",1)
+        if c[1]==2:
+            Posture(postureProxy,"StandZero",1)
+        if c[1]==3:
+            Posture(postureProxy,"Crouch",1)
+        if c[1]==4:
+            Posture(postureProxy,"SitRelax",1)
+        if c[1]==5:
+            Posture(postureProxy,"LyingBelly",1) # No la hace
+        if c[1]==6:
+            Posture(postureProxy,"LyingBack",1) # No la hace
+
+    if c[0]==8:
+        print "Escucho"
+>>>>>>> 180d9fd4e9202eb2e646cf87552a7c6e2b3a8eab
         asr.setLanguage("English")
         vocabulary = ["hello", "my","name","is","kratos"]
         asr.setVocabulary(vocabulary, True)
@@ -160,7 +180,11 @@ def main(robotIP):
     Stiffness(motionProxy,0)
 
 if __name__ == "__main__":
+<<<<<<< HEAD
     robotIp = "148.226.225.190"
+=======
+    robotIp = "148.226.225.50"
+>>>>>>> 180d9fd4e9202eb2e646cf87552a7c6e2b3a8eab
     if len(sys.argv) <= 1:
         print "..."
     else:

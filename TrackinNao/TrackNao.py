@@ -97,9 +97,9 @@ class Cam():
 					#Dibuja la ruta que siguio de la posicion inicial a la final
 					cv2.line(frame,(points[0]),(points[w-1]),(255,255,255),1)
 
-					for i in range (1,w-1):
+					for i in range (10,w-5):
 						if not (points[i] in cresta):
-							if (points[i-1][1] < points[i][1]) and (points[i+1][1] < points[i][1]):
+							if (points[i-3][1] < points[i][1]) and (points[i+3][1] < points[i][1]):
 								cresta.append(points[i])
 	
 					o = len(cresta)

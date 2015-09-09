@@ -175,7 +175,7 @@ def main(robotIP):
     Stiffness(motionProxy,0)
 
 if __name__ == "__main__":
-    robotIp = "148.226.221.185"
+    robotIp = "148.226.221.230"
     if len(sys.argv) <= 1:
         print "..."
     else:

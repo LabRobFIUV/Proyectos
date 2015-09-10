@@ -38,6 +38,10 @@ if __name__ == '__main__':
         if val[0]==7:
             val[1]=int(raw_input("Numero de pose: "))
 
+        if val[0]==9:
+            val[1]=int(raw_input("Mano Der/Izq 1/2: "))
+            val[2]=int(raw_input("Mano Abrir/cerrar 2/1: "))
+
         val=str(val)
 
         try:

@@ -33,14 +33,6 @@ def callback(data):
         #(motionProxy,X,Y,Theta,Frequency)
         Caminar(motionProxy,c[1]/10.0,c[2]/10.0,c[3]/10.0,c[4]/10.0)
 
-        '''
-        # 1.82 ~ 2mtrs
-        x  = 1.82
-        y  = 0
-        theta  = 0
-        motionProxy.moveTo(x, y, theta)
-        '''
-
         if c[5]!=0:
             time.sleep(15)
             Detenerse(motionProxy)
@@ -84,6 +76,19 @@ def callback(data):
         time.sleep(20)
         asr.unsubscribe("Test_ASR")
 
+    if c[0]==9:
+        print "Mano"
+        handName = ""        
+        if c[1]==1:
+            handName = 'RHand'
+        else:
+            handName = 'LHand'
+        if c[2]==1:
+            motionProxy.closeHand(handName)
+        else:
+            motionProxy.openHand(handName)
+
+
 def listener():
     print "Entro al listener"
     rospy.init_node('listener', anonymous=True)
@@ -113,7 +118,6 @@ def Brazos(motionProxy,ArmL,Part):
         motionProxy.angleInterpolationWithSpeed(LeftLegjoints, ArmL, pFractionMaxSpeed)
     if Part==6:
         motionProxy.angleInterpolationWithSpeed(LeftLegjoints, ArmL, pFractionMaxSpeed)
-
 
 def Caminar(motionProxy,X,Y,Theta,Frequency):
     motionProxy.setWalkTargetVelocity(X, Y, Theta, Frequency)
@@ -175,7 +179,8 @@ def main(robotIP):
     Stiffness(motionProxy,0)
 
 if __name__ == "__main__":
-    robotIp = "148.226.221.230"
+    robotIp = "148.226.225.114"
+#    robotIp = "148.226.225.135"
     if len(sys.argv) <= 1:
         print "..."
     else:

@@ -21,7 +21,10 @@ def main():
 			frame = drone.get_image()
 			frame = cv2.cvtColor(frame, cv2.COLOR_RGB2BGR)
 			cv2.imshow('frame',frame)
-
+			bat = drone.navdata.get(0, dict()).get('battery', 0)
+			alt = drone.navdata.get(0, dict()).get('altitude', 0)
+			print "Bateria:" + str(bat)
+			print "\nAltura" + str(alt)
 			tecla = cv2.waitKey(15)
 			
 			if (tecla > 0):

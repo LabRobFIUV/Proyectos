@@ -1,5 +1,4 @@
 #!/usr/bin/env python
-# Viveros Aguilar Jesus Martin
 import rospy
 from std_msgs.msg import String
 
@@ -16,39 +15,32 @@ def callback(data):
         c = [int(i) for i in c[1:-1].split(",")]
 
     if c[0]==1:
-        #Pararse
         print "Pararse"
         Stiffness(motionProxy,1)
         Posture(postureProxy,"StandInit",1)
 
     if c[0]==2:
-        #Sentarse
         print "Sentarse"
         Posture(postureProxy,"Sit",1)
         Stiffness(motionProxy,0)
 
     if c[0]==3:
-        # Caminar
         print "Caminar"
-        #(motionProxy,X,Y,Theta,Frequency)
         Caminar(motionProxy,c[1]/10.0,c[2]/10.0,c[3]/10.0,c[4]/10.0)
-
         if c[5]!=0:
             time.sleep(15)
             Detenerse(motionProxy)
 
     if c[0]==4:
-        # Mover Brazo
         print "Mover Brazo"
         ArmL = [c[2], c[3], c[4], c[5], c[6]]
-        Brazos(motionProxy,ArmL,c[1])
+        Cuerpo(motionProxy,ArmL,c[1])
 
     if c[0]=='5':
         print "Hablar"
         tts.say(c[1:])
 
     if c[0]==6:
-        # Detenerse
         print "Detenerse"
         Detenerse(motionProxy)
 
@@ -88,14 +80,28 @@ def callback(data):
         else:
             motionProxy.openHand(handName)
 
-
 def listener():
     print "Entro al listener"
     rospy.init_node('listener', anonymous=True)
     rospy.Subscriber("prueba", String, callback)
     rospy.spin()
 
-def Brazos(motionProxy,ArmL,Part):
+def Obt_pos():
+    chainName = "LArm"
+    space     = motion.FRAME_TORSO
+    useSensor = False
+    current = motionProxy.getPosition(chainName, space, useSensor)
+    return current
+
+def Arrivar():
+    print Obt_pos()
+    Caminar(motionProxy,0.8,0.0,0.0,0.3)
+    time.sleep(10)
+    Detenerse(motionProxy)
+    print ""
+    print Obt_pos()
+
+def Cuerpo(motionProxy,ArmL,Part):
     HeadJoins = ["HeadPitch", "HeadYaw"]
     LeftArmjoints = ["LShoulderPitch", "LShoulderRoll", "LElbowYaw", "LElbowRoll","LWristYaw"]
     RightArmjoints = ["RShoulderPitch", "RShoulderRoll", "RElbowYaw", "RElbowRoll","RWristYaw"]
@@ -138,52 +144,40 @@ def Stiffness(proxy,x):
     pTimeLists = 1.0
     proxy.stiffnessInterpolation(pNames, pStiffnessLists, pTimeLists)
 
-def main(robotIP):
+def main(robotIP,robotPort):
     global motionProxy
     global postureProxy
     global tts
-    global asr
     try:
-        motionProxy = ALProxy("ALMotion", robotIP, 9559)
+        motionProxy = ALProxy("ALMotion", robotIP, robotPort)
     except Exception, e:
         print "Could not create proxy to ALMotion"
-        print "Error was: ", e
+        #print "Error was: ", e
 
     try:
-        postureProxy = ALProxy("ALRobotPosture", robotIP, 9559)
+        postureProxy = ALProxy("ALRobotPosture", robotIP, robotPort)
     except Exception, e:
         print "Could not create proxy to ALRobotPosture"
-        print "Error was: ", e
+        #print "Error was: ", e
 
     try:
-        tts = ALProxy("ALTextToSpeech", robotIP, 9559)
+        tts = ALProxy("ALTextToSpeech", robotIP, robotPort)
     except Exception,e:
         print "Could not create proxy to ALTextToSpeech"
-        print "Error was: ",e
-        sys.exit(1)
-
-    try:
-        asr = ALProxy("ALSpeechRecognition", robotIP, 9559)
-    except Exception,e:
-        print "Could not create proxy to ALSpeechRecognition"
-        print "Error was: ",e
-        sys.exit(1)
-
+        #print "Error was: ",e
+ 
     motionProxy.setWalkArmsEnabled(True, True)
     motionProxy.setMotionConfig([["ENABLE_FOOT_CONTACT_PROTECTION", True]])
 
-    print "Listener"
-    listener()
+    Stiffness(motionProxy,1)
+    Posture(postureProxy,"StandInit",1)
+    #listener()
+    Arrivar()
 
-    postureProxy.goToPosture("Sit", 0.5)
+    postureProxy.goToPosture("Sit", 1)
     Stiffness(motionProxy,0)
 
 if __name__ == "__main__":
     robotIp = "148.226.225.114"
-#    robotIp = "148.226.225.135"
-    if len(sys.argv) <= 1:
-        print "..."
-    else:
-        robotIp = sys.argv[1]
-
-    main(robotIp)
+    robotPort = 9559
+    main(robotIp,robotPort)

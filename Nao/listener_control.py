@@ -5,6 +5,7 @@ from std_msgs.msg import String
 import sys
 import motion
 import time
+import math
 from naoqi import ALProxy
 
 def callback(data):
@@ -86,21 +87,6 @@ def listener():
     rospy.Subscriber("prueba", String, callback)
     rospy.spin()
 
-def Obt_pos():
-    chainName = "LArm"
-    space     = motion.FRAME_TORSO
-    useSensor = False
-    current = motionProxy.getPosition(chainName, space, useSensor)
-    return current
-
-def Arrivar():
-    print Obt_pos()
-    Caminar(motionProxy,0.8,0.0,0.0,0.4)
-    time.sleep(25)
-    Detenerse(motionProxy)
-    print ""
-    print Obt_pos()
-
 def Cuerpo(motionProxy,ArmL,Part):
     HeadJoins = ["HeadPitch", "HeadYaw"]
     LeftArmjoints = ["LShoulderPitch", "LShoulderRoll", "LElbowYaw", "LElbowRoll","LWristYaw"]
@@ -174,10 +160,10 @@ def main(robotIP,robotPort):
     #listener()
     Arrivar()
 
-    postureProxy.goToPosture("Sit", 1)
+    #postureProxy.goToPosture("Sit", 1)
     Stiffness(motionProxy,0)
 
 if __name__ == "__main__":
-    robotIp = "148.226.225.128"
+    robotIp = "148.226.221.183"
     robotPort = 9559
     main(robotIp,robotPort)

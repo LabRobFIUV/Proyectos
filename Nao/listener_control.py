@@ -28,7 +28,7 @@ def callback(data):
         print "Caminar"
         Caminar(motionProxy,c[1]/10.0,c[2]/10.0,c[3]/10.0,c[4]/10.0)
         if c[5]!=0:
-            time.sleep(15)
+            time.sleep(3)
             Detenerse(motionProxy)
 
     if c[0]==4:
@@ -95,8 +95,8 @@ def Obt_pos():
 
 def Arrivar():
     print Obt_pos()
-    Caminar(motionProxy,0.8,0.0,0.0,0.3)
-    time.sleep(10)
+    Caminar(motionProxy,0.8,0.0,0.0,0.4)
+    time.sleep(25)
     Detenerse(motionProxy)
     print ""
     print Obt_pos()
@@ -178,6 +178,6 @@ def main(robotIP,robotPort):
     Stiffness(motionProxy,0)
 
 if __name__ == "__main__":
-    robotIp = "148.226.225.114"
+    robotIp = "148.226.225.128"
     robotPort = 9559
     main(robotIp,robotPort)

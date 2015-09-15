@@ -157,13 +157,13 @@ def main(robotIP,robotPort):
 
     Stiffness(motionProxy,1)
     Posture(postureProxy,"StandInit",1)
-    #listener()
-    Arrivar()
 
-    #postureProxy.goToPosture("Sit", 1)
+    listener()
+
+    postureProxy.goToPosture("Sit", 1)
     Stiffness(motionProxy,0)
 
 if __name__ == "__main__":
-    robotIp = "148.226.221.183"
+    robotIp = "192.168.1.102"
     robotPort = 9559
     main(robotIp,robotPort)

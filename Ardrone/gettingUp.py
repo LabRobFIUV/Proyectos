@@ -11,8 +11,9 @@ def main():
 	drone.reset()
 	drone.set_camera_view(1)
 	print "Presiona U para subir"
-	drone.speed = 0.1
+	drone.speed = 0.5
 	i = 1
+	running = True
 
 	while True:
 
@@ -28,17 +29,19 @@ def main():
 			cv2.putText(frame,"Altura: "+str(alt),(500,20), font, 0.5,(255,0,0),2)
 			cv2.imshow('frame',frame)
 
+			print alt
 			tecla = cv2.waitKey(15)
 			
 			if (tecla > 0):
 				print tecla
 
+
 			#Tecla P / Take photo
 			if (tecla == 1048688):
-				print "P"
+				print "Photo taked it"
 				cv2.imwrite("photo-" + str(i) + ".jpeg",frame)
 				i+=1
-			#Estabilizar
+			#Tecla L / Estabilizar
 			elif (tecla == 1048684):
 				print "estabilizado"
 				drone.hover()
@@ -47,7 +50,6 @@ def main():
 				print "Subiendo"
 				while (t.time() < start + segundos) and (running == True):
 					print "subiendo"
-				running = False
 				print "acabo"
 			#Tecla W / Move Forward
 			elif (tecla == 1048695):

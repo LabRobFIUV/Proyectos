@@ -1,0 +1,32 @@
+<launch> 
+	<node pkg="irobot_create_2_1" type="driver.py" name="icreate">
+        <param name="port" value="/dev/serial/by-id/usb-Prolific_Technology_Inc._USB-Serial_Controller-if00-port0"/>
+        </node>
+	<node pkg="irobot_create_2_1" type="listener.py" name="bumper_detect"/>
+	<node pkg="tf" type="static_transform_publisher" name="base_to_kinect" args="0.13 0 0.15 0 0 0 base_link  camera_link 100"/>
+        <include file="$(find freenect_launch)/launch/freenect.launch"/>
+    	<node pkg="depthimage_to_laserscan" type="depthimage_to_laserscan" name="depthimage_to_laserscan" output="screen">
+         	<remap from="image" to="/camera/depth/image_raw"/>
+    	</node>
+  	<node pkg="map_server" type="map_server" name="map" output="screen"  args="/home/rob/catkin_ws/launchs/labrob/labrob1.yaml"/>
+	<node pkg="amcl" type="amcl" name="amcl" output="screen" >
+    		<param name="initial_pose_x" value="3.0" />
+    		<param name="initial_pose_y" value="4.6" /> 
+    		<param name="initial_pose_a" value="0" />
+    		<param name="use_map_topic" value="true" />
+   	 	  <!-- <param name="first_map_only" value="true" /> -->
+    		<param name="odom_model_type" value="diff" />
+  	</node>
+	<include file="$(find turtlebot_description)/turtle.launch"/>
+	
+	<node pkg="move_base" type="move_base" respawn="false" name="move_base" output="screen"> 
+    		<rosparam file="$(find turtlebot_navigation)/param/costmap_common_params.yaml" command="load" ns="global_costmap" />
+    		<rosparam file="$(find turtlebot_navigation)/param/costmap_common_params.yaml" command="load" ns="local_costmap" />
+    		<rosparam file="$(find turtlebot_navigation)/param/local_costmap_params.yaml" command="load" />
+    		<rosparam file="$(find turtlebot_navigation)/param/global_costmap_params.yaml" command="load" />
+    		<!-- <rosparam file="$(find turtlebot_navigation)/param/move_base_params.yaml" command="load" /> -->
+		<rosparam file="$(find turtlebot_navigation)/param/base_local_planner_params.yaml" command="load" />
+ 	</node>
+	 <node pkg="tf" type="static_transform_publisher" name="base_to_lw" args="0 0.13 0.015 0 0 0 base_link  left_wheel_link 100"/>
+	 <node pkg="tf" type="static_transform_publisher" name="base_to_rw" args="0 -0.13 0.015 0 0 0 base_link  right_wheel_link 100"/>
+</launch>

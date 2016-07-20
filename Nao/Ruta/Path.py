@@ -155,6 +155,7 @@ class Cam():
 						mxy=math.sqrt(mxy)
 
 						if m01 != 0 and mxy != 0:
+							# Calcula el angulo de desviacion
 							vA=((m01)**2+(mxy)**2-(m02)**2)/(2*m01*mxy)
 							vA=math.acos(vA)
 							vA=math.degrees(vA)
